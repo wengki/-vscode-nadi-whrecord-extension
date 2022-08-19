@@ -10,26 +10,29 @@ export class WorkingHistoryFiles {
         this.historyDirectoryFullpath = path.join(config.localDirectory, '/history');
     }
 
-    convertTimeToDate(timestamp: string, type?: string) {
+    convertTimeToDate(timestamp: any, type?: string) {
         var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         var monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const dirnameToDate = new Date(parseInt(timestamp));
+        const dirnameToDate: any = new Date(parseInt(timestamp));
         var dd = String(dirnameToDate.getDate()).padStart(2, '0');
         var m = String(dirnameToDate.getMonth() + 1).padStart(2, '0');
         var mm = monthShort[dirnameToDate.getMonth()];
         var mmm = month[dirnameToDate.getMonth()];
         var yyyy = dirnameToDate.getFullYear();
 
-        // return`${yyyy}-${mm}-${dd}`;
-        switch (type) {
-            case 'short':
-                return `${mm} ${dd}, ${yyyy}`;
-            case 'monthYear':
-                return `${mmm} ${yyyy}`
-            case 'monthYearNumber':
-                return `${yyyy}${m}`
-            default:
-                return `${mmm} ${dd}, ${yyyy}`;
+        if (dirnameToDate !== "Invalid Date" && !isNaN(dirnameToDate)) {
+            switch (type) {
+                case 'short':
+                    return `${mm} ${dd}, ${yyyy}`;
+                case 'monthYear':
+                    return `${mmm} ${yyyy}`
+                case 'monthYearNumber':
+                    return `${yyyy}${m}`
+                default:
+                    return `${mmm} ${dd}, ${yyyy}`;
+            }
+        } else {
+            return null;
         }
     }
 
@@ -65,7 +68,6 @@ export class WorkingHistoryFiles {
                     list.push(Object.assign(dataContent, { index: path.basename(collectionFileFullPath, '.json') }));
                 }
             });
-            // console.log(list);
         }
         return { [path.basename(fullPath)]: list };
     }
@@ -75,24 +77,27 @@ export class WorkingHistoryFiles {
         if (fs.statSync(this.historyDirectoryFullpath).isDirectory()) {
             const allList = await fs.readdirSync(this.historyDirectoryFullpath, { withFileTypes: true });
             allList.forEach((dir) => {
-                const yrMonth = this.convertTimeToDate(dir.name, 'monthYear');
-                const yrMonthNum = this.convertTimeToDate(dir.name, 'monthYearNumber');
-
-                if (!list.hasOwnProperty(yrMonthNum)) {
-                    Object.assign(list, {
-                        [yrMonthNum]: {
-                            text: yrMonth,
-                            count: 1
+                if (fs.statSync(path.join(this.historyDirectoryFullpath, dir.name)).isDirectory()) {
+                    const yrMonth = this.convertTimeToDate(dir.name, 'monthYear');
+                    const yrMonthNum = this.convertTimeToDate(dir.name, 'monthYearNumber');
+                    if (yrMonth) {
+                        if (list && !list.hasOwnProperty(yrMonthNum)) {
+                            Object.assign(list, {
+                                [yrMonthNum]: {
+                                    text: yrMonth,
+                                    count: 1
+                                }
+                            })
+                        } else {
+                            const item = list[yrMonthNum as keyof typeof list];
+                            Object.assign(list, {
+                                [yrMonthNum]: {
+                                    text: yrMonth,
+                                    count: item.count + 1
+                                }
+                            })
                         }
-                    })
-                } else {
-                    const item = list[yrMonthNum as keyof typeof list];
-                    Object.assign(list, {
-                        [yrMonthNum]: {
-                            text: yrMonth,
-                            count: item.count + 1
-                        }
-                    })
+                    }
                 }
             })
         }
@@ -106,18 +111,20 @@ export class WorkingHistoryFiles {
             allList.forEach((dir) => {
                 const date = this.convertTimeToDate(dir.name);
                 const yrMonthNum = this.convertTimeToDate(dir.name, 'monthYearNumber');
-                const lastChangeHistDir = path.join(this.historyDirectoryFullpath,dir.name, 'last');
+                const lastChangeHistDir = path.join(this.historyDirectoryFullpath, dir.name, 'last');
                 let count = 0;
-                if(fs.existsSync(lastChangeHistDir)){
-                    const dirMember = fs.readdirSync(lastChangeHistDir);
-                    count = dirMember.length;
-                }
-                if(yearMonthNumber === yrMonthNum){
-                    list.push({
-                        text: date,
-                        dirname: dir.name,
-                        count: count
-                    })
+                if (date) {
+                    if (fs.existsSync(lastChangeHistDir)) {
+                        const dirMember = fs.readdirSync(lastChangeHistDir);
+                        count = dirMember.length;
+                    }
+                    if (yearMonthNumber === yrMonthNum) {
+                        list.push({
+                            text: date,
+                            dirname: dir.name,
+                            count: count
+                        })
+                    }
                 }
             })
         }
@@ -131,7 +138,6 @@ export class WorkingHistoryFiles {
 
         const originFx = path.join(dataParentDir, '/origin', historyItem.index);
         const lastFx = path.join(dataParentDir, '/last', historyItem.index);
-        // console.log('originFx, lastFx', originFx, lastFx);
 
         // if(!fs.existsSync(originFx)){
         //     vscode.window.showErrorMessage(`The origin file of ${historyItem.rpath} of ${this.convertTimeToDate(historyItem.dirname)},  is unvailable!`);

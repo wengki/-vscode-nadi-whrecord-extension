@@ -1,6 +1,7 @@
 :root {
     --container-paddding: 20px;
-    --input-padding-vertical: 6px;
+    --container-paddding-half: 10px;
+    --input-padding-vertical: 4px;
     --input-padding-horizontal: 4px;
     --input-margin-vertical: 4px;
     --input-margin-horizontal: 0;
@@ -13,7 +14,7 @@
     font-weight: var(--vscode-font-weight);
     font-family: var(--vscode-font-family);
     background-color: var(--vscode-editor-background);
-    padding:10px 20px
+    padding: var(--container-paddding-half) var(--container-paddding)
   }
   
   ol,
@@ -54,6 +55,7 @@
     outline-offset: 2px !important;
     color: var(--vscode-button-foreground);
     background: var(--vscode-button-background);
+    max-width: 300px;
   }
   
   /* span {

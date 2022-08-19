@@ -313,7 +313,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (42:0) {#if targetFolderData.hasOwnProperty("date")}
+    // (39:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date")}
     function create_if_block_7(ctx) {
     	let h3;
 
@@ -332,7 +332,7 @@ var app = (function () {
     	};
     }
 
-    // (78:0) {:else}
+    // (75:0) {:else}
     function create_else_block(ctx) {
     	let ul;
     	let each_value_1 = /*projectFileHistory*/ ctx[1];
@@ -390,7 +390,7 @@ var app = (function () {
     	};
     }
 
-    // (45:0) {#if targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
+    // (42:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
     function create_if_block(ctx) {
     	let ul;
     	let each_value = /*projectFileHistory*/ ctx[1][targetFolderData.key];
@@ -448,7 +448,7 @@ var app = (function () {
     	};
     }
 
-    // (91:8) {#if historyCollections.hasOwnProperty(historyDate.dirname)}
+    // (88:8) {#if historyCollections && historyCollections.hasOwnProperty(historyDate.dirname)}
     function create_if_block_3(ctx) {
     	let if_block_anchor;
 
@@ -489,7 +489,7 @@ var app = (function () {
     	};
     }
 
-    // (125:10) {:else}
+    // (122:10) {:else}
     function create_else_block_1(ctx) {
     	let div;
 
@@ -508,7 +508,7 @@ var app = (function () {
     	};
     }
 
-    // (92:10) {#if historyCollections[historyDate.dirname].length > 0}
+    // (89:10) {#if historyCollections[historyDate.dirname].length > 0}
     function create_if_block_4(ctx) {
     	let ul;
     	let each_value_2 = /*historyCollections*/ ctx[0][/*historyDate*/ ctx[9].dirname];
@@ -566,7 +566,7 @@ var app = (function () {
     	};
     }
 
-    // (110:22) {#if item.hasOwnProperty("rename")}
+    // (107:22) {#if item && item.hasOwnProperty("rename")}
     function create_if_block_6(ctx) {
     	let span;
     	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].rename) + "";
@@ -594,7 +594,7 @@ var app = (function () {
     	};
     }
 
-    // (115:22) {#if item.hasOwnProperty("change")}
+    // (112:22) {#if item && item.hasOwnProperty("change")}
     function create_if_block_5(ctx) {
     	let span;
     	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].change) + "";
@@ -622,7 +622,7 @@ var app = (function () {
     	};
     }
 
-    // (94:14) {#each historyCollections[historyDate.dirname] as item}
+    // (91:14) {#each historyCollections[historyDate.dirname] as item}
     function create_each_block_2(ctx) {
     	let li;
     	let span;
@@ -631,9 +631,9 @@ var app = (function () {
     	let t1;
     	let div;
     	let small;
-    	let show_if_1 = /*item*/ ctx[6].hasOwnProperty("rename");
+    	let show_if_1 = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("rename");
     	let t2;
-    	let show_if = /*item*/ ctx[6].hasOwnProperty("change");
+    	let show_if = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("change");
     	let t3;
     	let mounted;
     	let dispose;
@@ -679,7 +679,7 @@ var app = (function () {
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
     			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*item*/ ctx[6].rpath + "")) set_data(t0, t0_value);
-    			if (dirty & /*historyCollections*/ 1) show_if_1 = /*item*/ ctx[6].hasOwnProperty("rename");
+    			if (dirty & /*historyCollections*/ 1) show_if_1 = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("rename");
 
     			if (show_if_1) {
     				if (if_block0) {
@@ -694,7 +694,7 @@ var app = (function () {
     				if_block0 = null;
     			}
 
-    			if (dirty & /*historyCollections*/ 1) show_if = /*item*/ ctx[6].hasOwnProperty("change");
+    			if (dirty & /*historyCollections*/ 1) show_if = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("change");
 
     			if (show_if) {
     				if (if_block1) {
@@ -719,14 +719,14 @@ var app = (function () {
     	};
     }
 
-    // (80:4) {#each projectFileHistory as historyDate}
+    // (77:4) {#each projectFileHistory as historyDate}
     function create_each_block_1(ctx) {
     	let li;
     	let span;
     	let t0_value = /*historyDate*/ ctx[9].text + "";
     	let t0;
     	let t1;
-    	let show_if = /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[9].dirname);
+    	let show_if = /*historyCollections*/ ctx[0] && /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[9].dirname);
     	let t2;
     	let mounted;
     	let dispose;
@@ -761,7 +761,7 @@ var app = (function () {
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyCollections*/ 1) show_if = /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[9].dirname);
+    			if (dirty & /*historyCollections*/ 1) show_if = /*historyCollections*/ ctx[0] && /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[9].dirname);
 
     			if (show_if) {
     				if (if_block) {
@@ -785,7 +785,7 @@ var app = (function () {
     	};
     }
 
-    // (63:12) {#if item.hasOwnProperty("rename")}
+    // (60:12) {#if item && item.hasOwnProperty("rename")}
     function create_if_block_2(ctx) {
     	let span;
     	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].rename) + "";
@@ -811,7 +811,7 @@ var app = (function () {
     	};
     }
 
-    // (68:12) {#if item.hasOwnProperty("change")}
+    // (65:12) {#if item && item.hasOwnProperty("change")}
     function create_if_block_1(ctx) {
     	let span;
     	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].change) + "";
@@ -837,7 +837,7 @@ var app = (function () {
     	};
     }
 
-    // (47:4) {#each projectFileHistory[targetFolderData.key] as item}
+    // (44:4) {#each projectFileHistory[targetFolderData.key] as item}
     function create_each_block(ctx) {
     	let li;
     	let span;
@@ -846,9 +846,9 @@ var app = (function () {
     	let t1;
     	let div;
     	let small;
-    	let show_if_1 = /*item*/ ctx[6].hasOwnProperty("rename");
+    	let show_if_1 = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("rename");
     	let t2;
-    	let show_if = /*item*/ ctx[6].hasOwnProperty("change");
+    	let show_if = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("change");
     	let t3;
     	let mounted;
     	let dispose;
@@ -909,13 +909,13 @@ var app = (function () {
     function create_fragment(ctx) {
     	let h2;
     	let t1;
-    	let show_if_1 = targetFolderData.hasOwnProperty("date");
+    	let show_if_1 = targetFolderData && targetFolderData.hasOwnProperty("date");
     	let t2;
     	let if_block1_anchor;
     	let if_block0 = show_if_1 && create_if_block_7();
 
     	function select_block_type(ctx, dirty) {
-    		if (targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")) return create_if_block;
+    		if (targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")) return create_if_block;
     		return create_else_block;
     	}
 
@@ -986,12 +986,9 @@ var app = (function () {
 
     	onMount(() => {
     		window.addEventListener("message", event => {
-    			// const message = event.data;
-    			// console.log({message})
     			switch (event.data.type) {
     				case "receiveHistoryCollections":
     					$$invalidate(0, historyCollections = Object.assign(historyCollections, event.data.value));
-    					// console.log(historyCollections);
     					break;
     			}
     		});

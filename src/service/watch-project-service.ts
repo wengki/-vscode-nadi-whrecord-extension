@@ -19,27 +19,30 @@ export class WatchWorkingDirectory {
     makeFile;
     context: vscode.ExtensionContext;
     sidebar: any;
+    settings: any;
     constructor(params: {
         context: any,
-        sidebar: any
+        sidebar: any,
+        settings: any
     }) { 
         this.historyDirectory = path.join(config.localDirectory,'/history');
         this.makeFile = new MakeFile();
         this.context = params.context;
         this.sidebar = params.sidebar;
+        this.settings = params.settings;
     }
 
     getFilesOnTabs() {
         for (let tabGroup of vscode.window.tabGroups.all) {
             const activeTab: any = tabGroup.activeTab?.input;
-            if (activeTab.hasOwnProperty('uri')) {
+            if (activeTab && activeTab.hasOwnProperty('uri')) {
                 this.readFileChange(activeTab.uri.fsPath, 'open');
             }
 
             const inactiveOpenedTab: any = tabGroup.tabs;
             inactiveOpenedTab.forEach((tab: any) => {
                 const tbInput: any = tab.input;
-                if (tbInput.hasOwnProperty('uri')) {
+                if (tbInput && tbInput.hasOwnProperty('uri')) {
                     this.readFileChange(tbInput.uri.fsPath, 'open');
                 }
             });
@@ -47,7 +50,7 @@ export class WatchWorkingDirectory {
     }
 
     checkIfContentChanges(md5FileName: string, md5Content: string, fullPath: string,  content: string): boolean {
-        if (!this.workingFiles.hasOwnProperty(md5FileName)) {
+        if (this.workingFiles && !this.workingFiles.hasOwnProperty(md5FileName)) {
             Object.assign(this.workingFiles, {
                 [md5FileName]: md5Content
             });
@@ -138,18 +141,24 @@ export class WatchWorkingDirectory {
         }
     }
 
-    run() {
+    async run() {
         try {
             if (config.workingDirectory) {
                 const workingDir = config.workingDirectory;
                 const $this = this;
+
+                let ingoreList: Array<string> = this.settings.getHistoryIgnoreList();
                 fs.watch(workingDir, { persistent: true, recursive: true }, function (event, fileName) {
                     let fullPath = path.join(workingDir, fileName);
-                    if(fileName.startsWith('.nadi')){
-                        return;
+                    let processHistory = true;
+                    ingoreList.forEach((prefix) => {
+                        if(fileName.startsWith(prefix.trim())){
+                            processHistory = false;
+                        }
+                    })
+                    if(processHistory){
+                        $this.readFileChange(fullPath, event);
                     }
-
-                    $this.readFileChange(fullPath, event);
                 });
             }
 

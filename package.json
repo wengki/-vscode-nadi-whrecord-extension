@@ -13,6 +13,7 @@
     "onStartupFinished",
     "onCommand:nadi.create-folder",
     "onCommand:nadi.create-file",
+    "onCommand:nadi.history-ignore-file",
     "onView:nadi-sidebar"
   ],
   "main": "./dist/extension.js",
@@ -47,6 +48,11 @@
         "command": "nadi.create-file",
         "category": "NADI",
         "title": "Create File"
+      },
+      {
+        "command": "nadi.history-ignore-file",
+        "category": "NADI",
+        "title": "NADI History: Ignore File/Folder"
       }
     ],
     "keybindings": [
@@ -55,10 +61,19 @@
         "key": "ctrl+alt+f"
       },
       {
-        "command": "nadi-dev.create-file",
+        "command": "nadi.create-file",
         "key": "ctrl+alt+n"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "when": "resourceScheme == file",
+          "command": "nadi.history-ignore-file",
+          "group": "NADI"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -78,6 +93,7 @@
     "@rollup/plugin-typescript": "^8.3.4",
     "@tsconfig/svelte": "^3.0.0",
     "@types/glob": "^7.2.0",
+    "@types/lodash": "^4.14.184",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.70.0",
@@ -98,5 +114,8 @@
     "typescript": "^4.7.4",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

@@ -7,8 +7,13 @@ export function propertyChek() {
         const workingDirectory = config.workingDirectory;
         const nadiExtensionDir = path.join(workingDirectory, '/.nadi');
         const gitIgnoreFx = path.join(workingDirectory, '/.gitignore');
+        const historyIgnoreFile = path.join(nadiExtensionDir, '/.historyIgnore');
         if (!fs.existsSync(nadiExtensionDir)) {
             fs.mkdirSync(nadiExtensionDir);
+        }
+
+        if (!fs.existsSync(historyIgnoreFile)) {
+            fs.writeFileSync(historyIgnoreFile,'');
         }
 
         if (fs.existsSync(gitIgnoreFx)) {

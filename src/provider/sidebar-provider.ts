@@ -3,13 +3,15 @@ import * as vscode from "vscode";
 import { getNonce } from "../getNonce";
 import { WorkingFilesHistoryTab } from './working-files-history-provider';
 import { WorkingHistoryFiles } from "../service/working-history-files";
+import { Settings } from "../lib/settings";
 
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
 
   constructor(private readonly _extensionUri: vscode.Uri,
-    private context: vscode.ExtensionContext
+    private context: vscode.ExtensionContext,
+    private settings: Settings
   ) {
 
   }
@@ -55,6 +57,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           vscode.window.showErrorMessage(data.value);
           break;
         }
+        case "onReloadWindow": {
+          vscode.commands.executeCommand("workbench.action.reloadWindow");
+          break;
+        }
         case "onRunDeveloperTool": {
           vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
           break;
@@ -74,6 +80,16 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
               list: list
             }
           })
+          break;
+        }
+        case "settingHistoryIgnoreRemoveItem": {
+          const doRemoveHistItem = await this.settings.removeHistoryIgnoreItem(data.value);
+          if(doRemoveHistItem === false){
+            webviewView.webview.postMessage({
+              type: 'settingHistoryIgnoreCANCELRemoveItem',
+              value: 'cancel'
+            })
+          }
           break;
         }
       }
@@ -101,6 +117,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     const nonce = getNonce();
     const initHistoryList = await this._historyWorkData().getHistoryByMonth();
+    const settings = {
+      historyIgnore: this.settings.getHistoryIgnoreList(true)
+    };
 
     return `<!DOCTYPE html>
 			<html lang="en">
@@ -119,6 +138,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                 <script nonce="${nonce}">
                     const nadivscode = acquireVsCodeApi();
                     const initHistoryList = ${JSON.stringify(initHistoryList)}
+                    const settings = ${JSON.stringify(settings)}
                 </script>
             </head>
             <body>

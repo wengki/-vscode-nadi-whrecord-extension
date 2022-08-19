@@ -5,6 +5,7 @@ import CommandHandler from './command/command-handler';
 import { SidebarProvider } from '../provider/sidebar-provider';
 import ContentProvider from '../provider/content-provider';
 import { UriService } from '../service/uri-service';
+import { Settings } from './settings';
 
 export default class IntegratorFactory {
     private readonly _extensionContext: any;
@@ -23,7 +24,8 @@ export default class IntegratorFactory {
             command: this._getCommand(),
             sidebar: this._getSidebar(),
             contentProvider: this._getContentProvider(),
-            context: this._extensionContext
+            context: this._extensionContext,
+            settings: this._getSettings(),
         })
     }
 
@@ -45,7 +47,7 @@ export default class IntegratorFactory {
     }
 
     _createSidebar() {
-        return new SidebarProvider(this._extensionContext.extensionUri, this._extensionContext);
+        return new SidebarProvider(this._extensionContext.extensionUri, this._extensionContext, this._getSettings());
     }
 
     _getContentProvider() {
@@ -66,6 +68,13 @@ export default class IntegratorFactory {
         return new UriService({
             Uri: vscode.Uri,
             getCurrentDateFn: () => Date.now()
+        });
+    }
+
+    _getSettings() {
+        return new Settings({
+            vscode,
+            context: this._extensionContext
         });
     }
 }

@@ -7,4 +7,5 @@ declare global {
     const workFilesHistory: Array<any>;
     const initHistoryList: any;
     const targetFolderData: any;
+    const settings: any;
 }

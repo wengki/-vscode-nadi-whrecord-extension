@@ -32,15 +32,12 @@
 
   onMount(() => {
     window.addEventListener("message", (event) => {
-      // const message = event.data;
-      // console.log({message})
       switch (event.data.type) {
         case "receiveHistoryCollections":
           historyCollections = Object.assign(
             historyCollections,
             event.data.value
           );
-          // console.log(historyCollections);
           break;
 
         default:
@@ -51,10 +48,10 @@
 </script>
 
 <h2>Working File History</h2>
-{#if targetFolderData.hasOwnProperty("date")}
+{#if targetFolderData && targetFolderData.hasOwnProperty("date")}
   <h3>{targetFolderData.date}</h3>
 {/if}
-{#if targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
+{#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
 <ul class="history-list-collection">
     {#each projectFileHistory[targetFolderData.key] as item}
       <li>
@@ -72,12 +69,12 @@
         <!-- ( {item.index} ) -->
         <div>
           <small>
-            {#if item.hasOwnProperty("rename")}
+            {#if item && item.hasOwnProperty("rename")}
               <span class="info-rename">
                 {getDateHour(item.rename)} -> new/rename
               </span>
             {/if}
-            {#if item.hasOwnProperty("change")}
+            {#if item && item.hasOwnProperty("change")}
               <span class="info-change"
                 >{getDateHour(item.change)} -> last change</span
               >
@@ -100,7 +97,7 @@
           }}>{historyDate.text}</span
         >
         <!-- {historyDate.dirname} -->
-        {#if historyCollections.hasOwnProperty(historyDate.dirname)}
+        {#if historyCollections && historyCollections.hasOwnProperty(historyDate.dirname)}
           {#if historyCollections[historyDate.dirname].length > 0}
             <ul class="history-list-collection">
               {#each historyCollections[historyDate.dirname] as item}
@@ -119,12 +116,12 @@
                   <!-- ( {item.index} ) -->
                   <div>
                     <small>
-                      {#if item.hasOwnProperty("rename")}
+                      {#if item && item.hasOwnProperty("rename")}
                         <span class="info-rename">
                           {getDateHour(item.rename)} -> new/rename
                         </span>
                       {/if}
-                      {#if item.hasOwnProperty("change")}
+                      {#if item && item.hasOwnProperty("change")}
                         <span class="info-change"
                           >{getDateHour(item.change)} -> last change</span
                         >

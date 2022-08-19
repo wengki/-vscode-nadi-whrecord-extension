@@ -32,10 +32,8 @@ export default class ContentProvider implements TextDocumentContentProvider {
         const dir = path.dirname(fPath);
         const ext = path.extname(fPath);
         fPath = path.join(dir, path.basename(fPath, ext));
-        console.log('fPath', fPath);
         return fs.readFileSync(fPath, {
             encoding: 'utf-8',
-
         });
     }
 }

@@ -10,13 +10,15 @@ export default class Integrator {
     private _sidebar: any;
     private _contentProvider: any;
     private _extensionContext: ExtensionContext;
+    private _settings: any;
 
-    constructor(params: { vscode: any, command: any , sidebar: any, contentProvider: any, context: any}) {
+    constructor(params: { vscode: any, command: any , sidebar: any, contentProvider: any, context: any, settings: any}) {
         this._vscode = params.vscode;
         this._commandHandler = params.command; 
         this._sidebar = params.sidebar; 
         this._contentProvider = params.contentProvider;
         this._extensionContext = params.context;
+        this._settings = params.settings;
     }
 
     integrate(context:ExtensionContext) {
@@ -32,6 +34,9 @@ export default class Integrator {
             const disposable = this._vscode.commands[command.registrar](
                 `${constant.EXTENSION_NAME}.${command.name}`,
                 handler.execute.bind(handler, command.name)
+                // (scm) => {
+                //     handler.execute.bind(handler, command.name, scm);
+                // }
             );
             context.subscriptions.push(disposable);
         })
@@ -65,6 +70,11 @@ export default class Integrator {
                 registrar: 'registerCommand',
                 handler: this._commandHandler
             },
+            {
+                name: 'history-ignore-file',
+                registrar: 'registerCommand',
+                handler: this._commandHandler
+            },
         ];
     }
 
@@ -80,7 +90,7 @@ export default class Integrator {
 
     _projectFolderWatch() {
         propertyChek();
-        const projectFolderWatch = new WatchWorkingDirectory({ context: this._extensionContext, sidebar:this._sidebar});
+        const projectFolderWatch = new WatchWorkingDirectory({ context: this._extensionContext, sidebar:this._sidebar, settings: this._settings});
         projectFolderWatch.getFilesOnTabs();
         projectFolderWatch.run();
     }

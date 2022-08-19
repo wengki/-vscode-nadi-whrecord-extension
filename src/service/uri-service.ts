@@ -47,7 +47,6 @@ export class UriService {
         const encodedParams = querystring.stringify(params);
 
         // Need filename in the path so that editor can understand filetype
-        // console.log(params.path);
         const uriPath = 'takediff' + (params.path ? `/${path.basename(params.path)}` : '');
         // const uriPath = 'takediff';
         return this._Uri.parse(`${constant.EXTENSION_NAME}:${uriPath}?${encodedParams}`);
