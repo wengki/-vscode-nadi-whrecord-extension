@@ -1,0 +1,94 @@
+small {
+    font-size: .78em;
+}
+
+ul.history-list> li {
+    list-style: none;
+    cursor: default;
+}
+ul.history-list> li> span {
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 16px;
+    text-decoration: underline;
+    font-style: italic;
+    color: aqua;
+    margin-top: 6px;
+}
+
+ul.history-list-collection {
+    margin-bottom: 6px;
+} 
+
+ul.history-list-collection> li {
+    /* font-style: italic; */
+    margin-top: 6px;
+    text-decoration: none;
+}
+ul.history-list-collection> li> .info-path {
+    color: #eea300;
+    cursor: pointer;
+}
+
+ul.history-list-collection> li .info-rename {
+    color: #50c681;
+    margin-right: 15px;
+}
+
+ul.history-list-collection> li .info-change {
+    color: #858585;
+    margin-right: 15px;
+}
+
+.badge {
+    font-size: 10px;
+    background-color: #777;
+    color: #ddd;
+    display: inline-block;
+    padding:2px 4px;
+    border-radius: 14px;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.gray {
+    color: #999999
+}
+
+ul.sidebar-history-list,
+ul.sidebar-history-list ul.sidebar-history-item-list {
+    margin: 0;
+    padding: 0;
+}
+ul.sidebar-history-list> li,
+ul.sidebar-history-list ul.sidebar-history-item-list> li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.sidebar-history-list> li:first-child> div.title {
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+
+ul.sidebar-history-list> li> div.title {
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    padding: 3px 8px;
+    color:rgb(255, 157, 0)
+}
+
+ul.sidebar-history-list ul.sidebar-history-item-list> li {
+    margin-left: 20px;
+}
+
+ul.sidebar-history-list ul.sidebar-history-item-list> li> div {
+    padding: 2px 8px;
+    cursor: pointer;
+}
+
+ul.sidebar-history-list ul.sidebar-history-item-list> li:not(:last-child)> div {
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
